@@ -2,6 +2,7 @@
 #define TLOGPARSET_H
 
 #include <QObject>
+#include "../LogParser/LogParser.h"
 
 class TLogParset : public QObject
 {
@@ -9,9 +10,14 @@ class TLogParset : public QObject
 public:
     explicit TLogParset(QObject *parent = nullptr);
 
-signals:
+private slots:
+    void TestParseAndCalc_data();
+    void TestParseAndCalc();
 
-public slots:
+protected:
+    void deleteFile(const QString &fileName);
+    void createFile(const QString &fileName, const QString &data);
+    bool compare(const QString &fileName, const QString &data);
 };
 
 #endif // TLOGPARSET_H

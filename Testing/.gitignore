@@ -1,6 +1,7 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
+Test*.txt
 *~
 *.autosave
 *.a
@@ -62,6 +63,7 @@ Thumbs.db
 # MinGW generated files
 *.Debug
 *.Release
+moc_*
 
 # Python byte code
 *.pyc

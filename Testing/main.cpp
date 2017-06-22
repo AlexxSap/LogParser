@@ -1,8 +1,9 @@
-#include <QCoreApplication>
+#include <QTest>
 
-int main(int argc, char *argv[])
+#include "TLogParset.h"
+
+int main()
 {
-    QCoreApplication a(argc, argv);
-
-    return a.exec();
+    TLogParset tLogParser;
+    return QTest::qExec(&tLogParser);
 }

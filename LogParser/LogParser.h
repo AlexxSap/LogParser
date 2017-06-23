@@ -38,7 +38,6 @@ private:
     std::string parse();
     void parseLine(const std::string &buffer);
     std::string toString() const;
-    void calc(const std::string &url);
     std::string getTopString(const std::map<std::string, unsigned> &data) const;
 
 private:

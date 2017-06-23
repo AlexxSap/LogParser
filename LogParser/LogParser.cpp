@@ -45,7 +45,7 @@ std::string LogParser::parse()
 
 void LogParser::parseLine(const std::string &buffer)
 {
-    const std::regex rx("http[s]?://([A-Za-z0-9\.\-]+)([a-zA-Z0-9\.\,\/\+\_]+)");
+    const std::regex rx("http[s]?://([A-Za-z0-9\\.\\-]+)([a-zA-Z0-9\\.\\,\\/\\+\\_]+)");
     std::smatch match;
 
     std::string local = buffer;
@@ -70,16 +70,10 @@ std::string LogParser::toString() const
     result += ", paths " + std::to_string(_topPaths.size());
     result += "\n\n";
 
-    result += "top domains\n" + getTopString(_topDomains);
+    result += "top domains\n" + getTopString(_topDomains) + "\n";
     result += "top paths\n" + getTopString(_topPaths);
 
-    std::cout << result << std::endl;
     return result;
-}
-
-void LogParser::calc(const std::string &url)
-{
-    std::cout << url << std::endl;
 }
 
 std::string LogParser::getTopString(const std::map<std::string, unsigned> &data) const

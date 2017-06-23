@@ -19,6 +19,14 @@ void TLogParset::TestParseAndCalc_data()
                            << 0
                            << QString();
 
+    QTest::newRow("simple-0") << "GET https://en.wikipedia.org/?w/index.php?title=Kirschkuchen&action=edit&section=8"
+                              << 5
+                              << "total urls 1, domains 1, paths 1\n\n"
+                                 "top domains\n"
+                                 "1 en.wikipedia.org\n\n"
+                                 "top paths\n"
+                                 "1 /\n";
+
     QTest::newRow("simple-1") << "GET https://en.wikipedia.org/w/index.php?title=Kirschkuchen&action=edit&section=8"
                               << 5
                               << "total urls 1, domains 1, paths 1\n\n"

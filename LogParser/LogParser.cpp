@@ -14,12 +14,19 @@ LogParser::LogParser(const std::string &logFileName,
 
 }
 
-void LogParser::make()
+bool LogParser::make()
 {
     const std::string dataString = parse();
+
+    if(dataString.empty())
+    {
+        return false;
+    }
     std::ofstream stream(_resultFileName);
     stream << dataString;
     stream.close();
+
+    return true;
 }
 
 std::string LogParser::parse()

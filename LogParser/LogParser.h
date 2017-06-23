@@ -32,7 +32,7 @@ public:
               const std::string &resultFileName,
               const int &topCount = 5);
 
-    void make();
+    bool make();
 
 private:
     std::string parse();

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <unordered_set>
 
 class LogParser
 {
@@ -38,15 +39,14 @@ private:
     void parseLine(const std::string &buffer);
     std::string toString() const;
     void calc(const std::string &url);
+    std::string getTopString(const std::map<std::string, unsigned> &data) const;
 
 private:
     std::string _logFileName;
     std::string _resultFileName;
-    int _topCount;
+    unsigned _topCount;
 
-    unsigned int _totalUrls;
-    unsigned int _totalDomains;
-    unsigned int _totalPaths;
+    std::unordered_set<std::string> _urls_;
 
     std::map<std::string, unsigned> _topDomains;
     std::map<std::string, unsigned> _topPaths;

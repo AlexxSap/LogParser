@@ -9,10 +9,7 @@ LogParser::LogParser(const std::string &logFileName,
                      const int &topCount) :
     _logFileName(logFileName),
     _resultFileName(resultFileName),
-    _topCount(topCount),
-    _totalUrls(0),
-    _totalDomains(0),
-    _totalPaths(0)
+    _topCount(topCount)
 {
 
 }
@@ -29,39 +26,77 @@ std::string LogParser::parse()
 {
     std::ifstream stream(_logFileName);
     std::string buffer;
+
+    bool empty = true;
     while(std::getline(stream, buffer))
     {
+        empty = false;
         parseLine(buffer);
     }
     stream.close();
+
+    if(empty)
+    {
+        return std::string();
+    }
 
     return toString();
 }
 
 void LogParser::parseLine(const std::string &buffer)
 {
-    const std::regex rx("http[s]?://([A-Za-z0-9\.\-]+)([^\?]+)");
+    const std::regex rx("http[s]?://([A-Za-z0-9\.\-]+)([a-zA-Z0-9\.\,\/\+\_]+)");
     std::smatch match;
-    if(std::regex_search(buffer, match, rx))
+
+    std::string local = buffer;
+    while(std::regex_search(local, match, rx))
     {
-        for(auto i = match.begin(); i != match.end(); i++)
+        for(unsigned i = 0; i < match.size(); i += 3)
         {
-            calc(*i);
+            _urls_.insert(match[i]);
+            _topDomains[match[i + 1]]++;
+            _topPaths[match[i + 2]]++;
         }
+        local = match.suffix().str();
     }
 }
 
 std::string LogParser::toString() const
 {
-    std::string result = "total urls " + std::to_string(_totalUrls)
-            + ", domains " + std::to_string(_totalDomains)
-            + ", paths " + std::to_string(_totalPaths)
-            + "\n\n";
+    std::string result;
 
+    result += "total urls " + std::to_string(_urls_.size());
+    result += ", domains " + std::to_string(_topDomains.size());
+    result += ", paths " + std::to_string(_topPaths.size());
+    result += "\n\n";
+
+    result += "top domains\n" + getTopString(_topDomains);
+    result += "top paths\n" + getTopString(_topPaths);
+
+    std::cout << result << std::endl;
     return result;
 }
 
 void LogParser::calc(const std::string &url)
 {
     std::cout << url << std::endl;
+}
+
+std::string LogParser::getTopString(const std::map<std::string, unsigned> &data) const
+{
+    std::string result;
+
+    unsigned counter = 0;
+    for(const auto& item : data)
+    {
+        result += std::to_string(item.second) + " " + item.first + "\n";
+
+        ++counter;
+        if(counter == _topCount)
+        {
+            break;
+        }
+    }
+
+    return result;
 }
